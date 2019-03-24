@@ -4,6 +4,9 @@ BOOL isDragging = NO;
 BOOL hasFullyLoaded = NO;
 BOOL isUsingGoodges = NO;
 
+BOOL enabled;
+double delay;
+
 %hook SBFolderView
 -(void)pageControl:(id)arg1 didRecieveTouchInDirection:(int)arg2 {
 	%orig;
@@ -23,13 +26,20 @@ BOOL isUsingGoodges = NO;
 
 -(void)layoutSubviews {
 	%orig;
-	[self _hideLabels];
+	// Nasty workaround because this method gets called several times in a row
+	// and we are unable to know which one is the one we actually need (homescreen became visible)
+	if (delay >= 2.0) {
+		[self _prepareHideLabels];
+	} else {
+		[self _hideLabels];
+	}
+
 }
 
 %new
 -(void)_prepareHideLabels {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_hideLabels) object:nil];
-	[self performSelector:@selector(_hideLabels) withObject:nil afterDelay:1.0];
+	[self performSelector:@selector(_hideLabels) withObject:nil afterDelay:delay];
 }
 
 %new
@@ -101,8 +111,37 @@ static void animateIconLabelAlpha(double alpha) {
 	}];
 }
 
+// ===== PREFERENCE HANDLING ===== //
+
+static void loadPrefs() {
+  NSMutableDictionary *prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:@"/var/mobile/Library/Preferences/com.noisyflake.shylabels.plist"];
+
+  if (prefs) {
+    enabled = ( [prefs objectForKey:@"enabled"] ? [[prefs objectForKey:@"enabled"] boolValue] : YES );
+    delay = ( [prefs objectForKey:@"delay"] ? [[prefs objectForKey:@"delay"] doubleValue] : 1.0 );
+  }
+
+}
+
+static void initPrefs() {
+  // Copy the default preferences file when the actual preference file doesn't exist
+  NSString *path = @"/User/Library/Preferences/com.noisyflake.shylabels.plist";
+  NSString *pathDefault = @"/Library/PreferenceBundles/ShyLabels.bundle/defaults.plist";
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  if (![fileManager fileExistsAtPath:path]) {
+    [fileManager copyItemAtPath:pathDefault toPath:path error:nil];
+  }
+}
+
 %ctor {
+	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, (CFNotificationCallback)loadPrefs, CFSTR("com.noisyflake.shylabels/prefsupdated"), NULL, CFNotificationSuspensionBehaviorCoalesce);
+	initPrefs();
+	loadPrefs();
+
 	NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSString *goodgesDylib = @"/Library/MobileSubstrate/DynamicLibraries/Goodges.dylib";
-	isUsingGoodges = [fileManager fileExistsAtPath:goodgesDylib];
+	isUsingGoodges = [fileManager fileExistsAtPath:@"/Library/MobileSubstrate/DynamicLibraries/Goodges.dylib"];
+
+	if(enabled) {
+		%init(_ungrouped);
+	}
 }

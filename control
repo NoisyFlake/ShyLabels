@@ -1,7 +1,7 @@
 Package: com.noisyflake.shylabels
 Name: Shy Labels
 Depends: mobilesubstrate
-Version: 1.0.0
+Version: 1.1.0
 Architecture: iphoneos-arm
 Description: Hide app labels when not scrolling
 Depiction: https://apt.noisyflake.com/depictions/index.html?id=com.noisyflake.shylabels
