@@ -71,7 +71,7 @@
         tweakName.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
         tweakName.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:40.0f];
         tweakName.textColor = [UIColor whiteColor];
-        tweakName.text = @"Shy Labels";
+        tweakName.text = @"ShyLabels13";
         // tweakName.backgroundColor = [UIColor colorWithRed:0.30 green:0.85 blue:0.39 alpha:1.0];
         tweakName.textAlignment = NSTextAlignmentCenter;
 

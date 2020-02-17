@@ -1,5 +1,5 @@
-Package: me.conorthedev.shylabels
-Name: Shy Labels
+Package: me.conorthedev.shylabels13
+Name: ShyLabels13
 Depends: mobilesubstrate
 Version: 1.2
 Architecture: iphoneos-arm

@@ -3,8 +3,8 @@ FINALPACKAGE = 1
 
 include $(THEOS)/makefiles/common.mk
 
-TWEAK_NAME = ShyLabels
-ShyLabels_FILES = Tweak.xm
+TWEAK_NAME = ShyLabels13
+ShyLabels13_FILES = Tweak.xm
 
 include $(THEOS_MAKE_PATH)/tweak.mk
 
