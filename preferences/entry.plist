@@ -16,8 +16,6 @@
 			<string>Shy Labels</string>
 			<key>icon</key>
 			<string>icon.png</string>
-			<key>packageID</key>
-			<string>com.noisyflake.ipadstatusbar</string>
 		</dict>
 	</dict>
 </plist>

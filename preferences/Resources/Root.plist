@@ -15,10 +15,10 @@
 		<dict>
 			<key>cell</key>						<string>PSSwitchCell</string>
 			<key>default</key>					<true/>
-			<key>defaults</key>					<string>com.noisyflake.shylabels</string>
+			<key>defaults</key>					<string>me.conorthedev.shylabels</string>
 			<key>key</key>						<string>enabled</string>
 			<key>label</key>					<string>Enable</string>
-			<key>PostNotification</key> 		<string>com.noisyflake.shylabels/prefsupdated</string>
+			<key>PostNotification</key> 		<string>me.conorthedev.shylabels/prefsupdated</string>
 		</dict>
 
 		<dict>
@@ -30,12 +30,12 @@
 		<dict>
 			<key>cell</key> 					<string>PSSliderCell</string>
 			<key>default</key> 					<real>1</real>
-			<key>defaults</key> 				<string>com.noisyflake.shylabels</string>
+			<key>defaults</key> 				<string>me.conorthedev.shylabels</string>
 			<key>key</key> 						<string>delay</string>
 			<key>min</key> 						<real>0</real>
 			<key>max</key> 						<real>10</real>
 			<key>showValue</key> 				<true/>
-			<key>PostNotification</key> 		<string>com.noisyflake.shylabels/prefsupdated</string>
+			<key>PostNotification</key> 		<string>me.conorthedev.shylabels/prefsupdated</string>
 		</dict>
 
 		<dict>
@@ -44,17 +44,20 @@
 		</dict>
 		<dict>
 			<key>cell</key> 					<string>PSButtonCell</string>
+			<key>action</key> 					<string>kofi</string>
+			<key>label</key> 					<string>Donate to ConorTheDev</string>
+		</dict>
+		<dict>
+			<key>cell</key> 					<string>PSButtonCell</string>
 			<key>action</key> 					<string>paypal</string>
-			<key>label</key> 					<string>Donate via PayPal</string>
+			<key>label</key> 					<string>Donate to NoisyFlake</string>
 		</dict>
 
 		<dict>
 			<key>cell</key> 					<string>PSGroupCell</string>
-			<key>footerText</key> 				<string>Developed with ♥ by NoisyFlake</string>
+			<key>footerText</key> 				<string>Developed with ♥ by NoisyFlake\nUpdated for iOS 13 by ConorTheDev</string>
 			<key>footerAlignment</key> 			<string>1</string>
 		</dict>
-
-
 	</array>
 
 	<key>title</key>
