@@ -3,46 +3,40 @@
 #import <SpringBoard/SBIconController.h>
 #import <SpringBoard/SBIconView.h>
 #import <SpringBoard/SBIconViewMap.h>
+#import <SpringBoard/SBRootFolderView.h>
+#import <SpringBoard/SBRootFolderController.h>
 
-#define SYSTEM_VERSION_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedSame)
-#define SYSTEM_VERSION_GREATER_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedDescending)
-#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
-#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
-#define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
-
-@interface SBFolderView (ShyPageDots)
-- (void)_prepareHideLabels;
-- (void)_hideLabels;
-- (void)_showLabels;
-@end
-
-@interface SBIconView (ShyCons)
-- (void)setIconLabelAlpha:(float)alpha;
-@end
-
-@interface SBIconViewMap (ShyCons)
-- (id)mappedIconViewForIcon:(id)icon;
-@end
+#define kIdentifier @"me.conorthedev.shylabels"
+#define kSettingsChangedNotification (CFStringRef)@"me.conorthedev.shylabels/ReloadPrefs"
+#define kSettingsPath @"/var/mobile/Library/Preferences/me.conorthedev.shylabels.plist"
 
 @interface SBIconListView : UIView
 - (id)icons;
 @end
 
-@interface SBRootFolderView
+@interface SBFolderView (Private)
+@property (nonatomic,readonly) SBIconListView *currentIconListView;
+@end
+
+@interface SBFolderView (ShyLabels)
+- (void)_shyLabelsPrepareHideLabels;
+- (void)_shyLabelsHideLabels;
+- (void)_shyLabelsAnimate:(int)alpha;
+@end
+
+@interface SBIconView (Private)
+@property (nonatomic, readonly) float iconLabelAlpha;
+-(void)_applyIconLabelAlpha:(double)arg1 ;
+@end
+
+@interface SBRootFolderView (Private)
 - (SBIconListView *)currentIconListView;
 @end
 
-@interface SBRootFolderController
+@interface SBRootFolderController (Private)
 - (SBRootFolderView *)rootFolderView;
 @end
 
-@interface SBIconController (ShyCons)
+@interface SBIconController (Private)
 - (SBRootFolderController *)rootFolderController;
 @end
-
-@interface SBRootIconListView
-- (id)icons;
-- (id)viewMap;
-@end
-
-static void animateIconLabelAlpha(double alpha, int version);

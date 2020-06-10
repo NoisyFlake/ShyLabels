@@ -1,10 +1,11 @@
 Package: me.conorthedev.shylabels13
-Name: ShyLabels13
-Depends: mobilesubstrate
-Version: 1.2
+Name: ShyLabels
+Depends: mobilesubstrate, preferenceloader
+Version: 1.3
 Architecture: iphoneos-arm
-Description: Hide app labels when not scrolling (updated for iOS 13)
+Description: Hide your app labels when not scrolling
 Maintainer: ConorTheDev
-Author: ConorTheDev, NoisyFlake
+Author: ConorTheDev + NoisyFlake
 Section: Tweaks
 Replaces: com.noisyflake.shylabels
+Provides: com.noisyflake.shylabels

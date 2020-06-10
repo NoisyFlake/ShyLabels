@@ -1,10 +1,17 @@
+INSTALL_TARGET_PROCESSES = Preferences
+ARCHS = arm64 arm64e
+FINALPACKAGE = 1
+SDKPATH=/Users/conor/theos/sdks/iPhoneOS13.0.sdk
+SDKVERSION=13.0
+
 include $(THEOS)/makefiles/common.mk
 
 BUNDLE_NAME = ShyLabels
-ShyLabels_FILES = $(wildcard *.m)
-ShyLabels_INSTALL_PATH = /Library/PreferenceBundles
-ShyLabels_FRAMEWORKS = CoreGraphics UIKit
-ShyLabels_PRIVATE_FRAMEWORKS = Preferences
+$(BUNDLE_NAME)_FILES = $(wildcard *.m) $(wildcard */*.m)
+$(BUNDLE_NAME)_CFLAGS = -Wno-deprecated-declarations
+$(BUNDLE_NAME)_INSTALL_PATH = /Library/PreferenceBundles
+$(BUNDLE_NAME)_FRAMEWORKS = CoreGraphics UIKit
+$(BUNDLE_NAME)_PRIVATE_FRAMEWORKS = Preferences
 
 include $(THEOS_MAKE_PATH)/bundle.mk
 

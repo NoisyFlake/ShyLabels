@@ -2,65 +2,108 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>name</key>
+	<string>ShyLabels</string>
+	<key>subtitle</key>
+	<string>Version 1.3</string>
+	<key>headerColor</key>
+	<string>#BE93C5</string>
+	<key>darkHeaderColor</key>
+	<string>#BE93C5</string>
+	<key>textColor</key>
+	<string>#ffffff</string>
+	<key>darkTextColor</key>
+	<string>#ffffff</string>
 	<key>items</key>
 	<array>
-		<dict>
-			<key>cell</key>						<string>PSGroupCell</string>
-			<key>footerCellClass</key>			<string>ShyLabelsLogo</string>
- 		</dict>
-
  		<dict>
-			<key>cell</key> 					<string>PSGroupCell</string>
+			<key>cell</key> 					
+			<string>PSGroupCell</string>
+			<key>label</key>
+			<string>Configuration</string>
 		</dict>
 		<dict>
-			<key>cell</key>						<string>PSSwitchCell</string>
-			<key>default</key>					<true/>
-			<key>defaults</key>					<string>me.conorthedev.shylabels</string>
-			<key>key</key>						<string>enabled</string>
-			<key>label</key>					<string>Enable</string>
-			<key>PostNotification</key> 		<string>me.conorthedev.shylabels/prefsupdated</string>
+			<key>cell</key>						
+			<string>PSSwitchCell</string>
+			<key>default</key>					
+			<true/>
+			<key>defaults</key>					
+			<string>me.conorthedev.shylabels</string>
+			<key>key</key>						
+			<string>enabled</string>
+			<key>label</key>					
+			<string>Enabled</string>
+			<key>PostNotification</key> 		
+			<string>me.conorthedev.shylabels/ReloadPrefs</string>
 		</dict>
-
 		<dict>
 			<key>cell</key>
 			<string>PSGroupCell</string>
 			<key>label</key>
-			<string>Hide delay (in seconds)</string>
+			<string>Hide delay (seconds)</string>
 		</dict>
 		<dict>
-			<key>cell</key> 					<string>PSSliderCell</string>
-			<key>default</key> 					<real>1</real>
-			<key>defaults</key> 				<string>me.conorthedev.shylabels</string>
-			<key>key</key> 						<string>delay</string>
-			<key>min</key> 						<real>0</real>
-			<key>max</key> 						<real>10</real>
-			<key>showValue</key> 				<true/>
-			<key>PostNotification</key> 		<string>me.conorthedev.shylabels/prefsupdated</string>
-		</dict>
-
-		<dict>
-			<key>cell</key> 					<string>PSGroupCell</string>
-			<key>label</key> 					<string>Buy me a coffee</string>
-		</dict>
-		<dict>
-			<key>cell</key> 					<string>PSButtonCell</string>
-			<key>action</key> 					<string>kofi</string>
-			<key>label</key> 					<string>Donate to ConorTheDev</string>
+			<key>cell</key> 					
+			<string>PSSliderCell</string>
+			<key>default</key> 					
+			<real>1</real>
+			<key>defaults</key> 				
+			<string>me.conorthedev.shylabels</string>
+			<key>key</key> 						
+			<string>delay</string>
+			<key>min</key> 						
+			<real>0</real>
+			<key>max</key> 						
+			<real>10</real>
+			<key>showValue</key> 				
+			<true/>
+			<key>PostNotification</key> 		
+			<string>me.conorthedev.shylabels/ReloadPrefs</string>
 		</dict>
 		<dict>
-			<key>cell</key> 					<string>PSButtonCell</string>
-			<key>action</key> 					<string>paypal</string>
-			<key>label</key> 					<string>Donate to NoisyFlake</string>
+			<key>cell</key> 					
+			<string>PSGroupCell</string>
+			<key>label</key> 					
+			<string>Other</string>
 		</dict>
-
 		<dict>
-			<key>cell</key> 					<string>PSGroupCell</string>
-			<key>footerText</key> 				<string>Developed with ♥ by NoisyFlake, Updated for iOS 13 by ConorTheDev</string>
-			<key>footerAlignment</key> 			<string>1</string>
+			<key>cell</key> 					
+			<string>PSButtonCell</string>
+			<key>action</key> 					
+			<string>code</string>
+			<key>label</key> 					
+			<string>View source code</string>
+			<key>icon</key>
+			<string>/Library/PreferenceBundles/ShyLabels.bundle/icons/Source/icon_29pt.png</string>
+		</dict>
+		<dict>
+			<key>cell</key> 					
+			<string>PSButtonCell</string>
+			<key>action</key> 					
+			<string>bug</string>
+			<key>label</key> 					
+			<string>Report a Bug</string>
+			<key>icon</key>
+			<string>/Library/PreferenceBundles/ShyLabels.bundle/icons/Bug/icon_29pt.png</string>
+		</dict>
+		<dict>
+			<key>cell</key> 					
+			<string>PSButtonCell</string>
+			<key>action</key> 					
+			<string>donate</string>
+			<key>label</key> 					
+			<string>Support NoisyFlake</string>
+			<key>icon</key>
+			<string>/Library/PreferenceBundles/ShyLabels.bundle/icons/Donate/icon_29pt.png</string>
+		</dict>
+		<dict>
+			<key>cell</key> 					
+			<string>PSGroupCell</string>
+			<key>footerText</key> 				
+			<string>Developed with 💖 by NoisyFlake and ConorTheDev</string>
+			<key>footerAlignment</key> 			
+			<string>1</string>
 		</dict>
 	</array>
-
-	<key>title</key>
-	<string></string>
 </dict>
 </plist>

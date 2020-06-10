@@ -1,12 +1,7 @@
 #import <Preferences/PSListController.h>
-#import <Preferences/PSSpecifier.h>
+#import <Preferences/PSTableCell.h>
 
-@interface ShyLabelsController : PSListController
-@end
+#import "SkittyPrefs/SPSettingsController.h"
 
-@interface ShyLabelsLogo : PSTableCell {
-	UILabel *background;
-	UILabel *tweakName;
-	UILabel *version;
-}
+@interface ShyLabelsController : SPSettingsController
 @end
