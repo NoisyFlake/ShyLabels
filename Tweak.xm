@@ -3,6 +3,7 @@
 BOOL isDragging = NO;
 BOOL isUsingCozyBadges = NO;
 BOOL wasPressed = NO;
+BOOL alreadyProcessing = NO;
 
 NSDictionary *prefs;
 BOOL enabled;
@@ -10,16 +11,19 @@ double delay;
 
 %hook SBFolderView
 -(void)pageControl:(id)arg1 didRecieveTouchInDirection:(int)arg2 {
+	%log;
 	%orig;
 	[self _shyLabelsPrepareHideLabels];
 }
 
 -(void)scrollViewDidEndDragging:(id)arg1 willDecelerate:(_Bool)arg2 {
+	%log;
 	%orig;
 	[self _shyLabelsPrepareHideLabels];
 }
 
 -(void)scrollViewWillBeginDragging:(id)arg1 {
+	%log;
 	%orig;
 	isDragging = YES;
 	[self _shyLabelsAnimate:1];
@@ -27,7 +31,6 @@ double delay;
 
 -(void)layoutSubviews {
 	%orig;
-
 	if (delay >= 2.0) {
 		[self _shyLabelsPrepareHideLabels];
 	} else {
@@ -49,6 +52,9 @@ double delay;
 
 %new
 -(void)_shyLabelsAnimate:(int)alpha {
+	if(delay == 0) {
+		return;
+	}
 	SBIconListView *rootView = self.currentIconListView;
 	[UIView animateWithDuration:0.5 animations:^{
 		for(UIView *icon in rootView.subviews) {
@@ -88,9 +94,41 @@ double delay;
 	}
 }
 
--(void)contextMenuInteraction:(id)arg1 willEndForConfiguration:(id)arg2 animator:(id)arg3 {
+-(void)setLabelHidden:(BOOL)arg1 {
+	if(delay == 0) {
+		arg1 = TRUE;
+	}
+	%orig(arg1);
+}
+
+-(void)_applyIconLabelAlpha:(double)arg1 {
+	if(arg1 == 1 && wasPressed) {
+		arg1 = 0;
+		wasPressed = NO;
+	}
+	%orig(arg1);
+}
+
+-(void)contextMenuInteraction:(id)arg1 willEndForConfiguration:(id)arg2 animator:(id)arg3  { 
+	%log; 
+	%orig; 
+	[self _applyIconLabelAlpha:0];
+	wasPressed = YES; 
+}
+
+
+-(void)setContextMenuInteractionActive:(BOOL)arg1  { 
+	%log;
 	%orig;
-	wasPressed = YES;
+	[self _applyIconLabelAlpha:0];
+	wasPressed = YES; 
+}
+
+-(void)dismissContextMenuWithCompletion:(id)arg1  {
+	%log; 
+	%orig;
+	[self _applyIconLabelAlpha:0];
+	wasPressed = YES;  
 }
 %end
 

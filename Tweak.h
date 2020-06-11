@@ -26,7 +26,8 @@
 
 @interface SBIconView (Private)
 @property (nonatomic, readonly) float iconLabelAlpha;
--(void)_applyIconLabelAlpha:(double)arg1 ;
+- (void)_applyIconLabelAlpha:(double)arg1;
+- (void)setIconLabelAlpha:(double)arg1;
 @end
 
 @interface SBRootFolderView (Private)
