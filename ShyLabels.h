@@ -24,10 +24,17 @@
 - (void)_shyLabelsAnimate:(int)alpha;
 @end
 
+@interface SBFloatyFolderView : SBFolderView
+@end
+
 @interface SBIconView (Private)
-@property (nonatomic, readonly) float iconLabelAlpha;
+@property (assign,getter=isContextMenuInteractionActive,nonatomic) BOOL contextMenuInteractionActive;
 - (void)_applyIconLabelAlpha:(double)arg1;
-- (void)setIconLabelAlpha:(double)arg1;
+- (void)_updateAllComponentAlphas;
+@end
+
+@interface SBIconView (ShyLabels)
+- (void)_shylabelsHideLabel;
 @end
 
 @interface SBRootFolderView (Private)

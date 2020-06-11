@@ -1,29 +1,37 @@
-#import <Tweak.h>
+#import "ShyLabels.h"
 
 BOOL isDragging = NO;
 BOOL isUsingCozyBadges = NO;
-BOOL wasPressed = NO;
-BOOL alreadyProcessing = NO;
+BOOL overrideAlpha = NO;
 
 NSDictionary *prefs;
-BOOL enabled;
-double delay;
+BOOL enabled = YES;
+BOOL enabledFolders = YES;
+double delay = 2.0;
 
 %hook SBFolderView
--(void)pageControl:(id)arg1 didRecieveTouchInDirection:(int)arg2 {
-	%log;
+-(void)prepareToOpen {
+	%orig;
+	isDragging = YES;
+	[self _shyLabelsAnimate:1];
+}
+
+-(void)prepareForTransition {
 	%orig;
 	[self _shyLabelsPrepareHideLabels];
 }
 
--(void)scrollViewDidEndDragging:(id)arg1 willDecelerate:(_Bool)arg2 {
-	%log;
+-(void)pageControl:(id)arg1 didRecieveTouchInDirection:(int)arg2 {
+	%orig;
+	[self _shyLabelsPrepareHideLabels];
+}
+
+-(void)scrollViewWillEndDragging:(id)arg1 withVelocity:(id)arg2 targetContentOffset:(id)arg3 {
 	%orig;
 	[self _shyLabelsPrepareHideLabels];
 }
 
 -(void)scrollViewWillBeginDragging:(id)arg1 {
-	%log;
 	%orig;
 	isDragging = YES;
 	[self _shyLabelsAnimate:1];
@@ -31,30 +39,29 @@ double delay;
 
 -(void)layoutSubviews {
 	%orig;
-	if (delay >= 2.0) {
-		[self _shyLabelsPrepareHideLabels];
-	} else {
-		[self _shyLabelsHideLabels];
-	}
+	[self _shyLabelsPrepareHideLabels];
 }
 
 %new
 -(void)_shyLabelsPrepareHideLabels {
+	if([self isKindOfClass:%c(SBFloatyFolderView)] && !enabledFolders) return;
+
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_shyLabelsHideLabels) object:nil];
 	[self performSelector:@selector(_shyLabelsHideLabels) withObject:nil afterDelay:delay];
 }
 
 %new
 -(void)_shyLabelsHideLabels {
+	if([self isKindOfClass:%c(SBFloatyFolderView)] && !enabledFolders) return;
+
 	[self _shyLabelsAnimate:0];
 	isDragging = NO;
 }
 
 %new
 -(void)_shyLabelsAnimate:(int)alpha {
-	if(delay == 0) {
-		return;
-	}
+	if([self isKindOfClass:%c(SBFloatyFolderView)] && !enabledFolders) return;
+
 	SBIconListView *rootView = self.currentIconListView;
 	[UIView animateWithDuration:0.5 animations:^{
 		for(UIView *icon in rootView.subviews) {
@@ -74,8 +81,34 @@ double delay;
 %end
 
 %hook SBIconView
--(void)layoutSubviews {
+/*
+ * If delay is 0, permanently hide the labels
+ */
+-(void)setLabelHidden:(BOOL)arg1 {
+	%orig(!delay ? TRUE : arg1);
+}
+
+/* 
+ * Explanation of the following 2 functions:
+ * effectiveIconLabelAlpha is called before _applyIconLabelAlpha, by setting the overrideAlpha BOOL, we can stop iOS trying to change our alpha
+ * This is used for when the context menu is invoked, the label is forced to show from a method call that originates from setContextMenuInteractionActive:
+ */
+-(double)effectiveIconLabelAlpha {
+	overrideAlpha = !isDragging;
+	return %orig;
+}
+
+-(void)_applyIconLabelAlpha:(double)arg1 {
+	%orig(overrideAlpha ? 0 : arg1);
+	overrideAlpha = NO;
+}
+
+/*
+ * Show CozyBadges if we recieve a new notification
+ */
+-(void)_updateAccessoryViewWithAnimation:(BOOL)arg1 {
 	%orig;
+
 	
 	if (isUsingCozyBadges && !isDragging) {
 		SBIconController *controller = [%c(SBIconController) sharedInstance];
@@ -88,47 +121,7 @@ double delay;
 		if (![icons containsObject:icon]) return;
 
 		[self _applyIconLabelAlpha:![icon badgeValue]];
-	} else if (!isDragging && wasPressed) {
-		[self _applyIconLabelAlpha:0];
-		wasPressed = NO;
-	}
-}
-
--(void)setLabelHidden:(BOOL)arg1 {
-	if(delay == 0) {
-		arg1 = TRUE;
-	}
-	%orig(arg1);
-}
-
--(void)_applyIconLabelAlpha:(double)arg1 {
-	if(arg1 == 1 && wasPressed) {
-		arg1 = 0;
-		wasPressed = NO;
-	}
-	%orig(arg1);
-}
-
--(void)contextMenuInteraction:(id)arg1 willEndForConfiguration:(id)arg2 animator:(id)arg3  { 
-	%log; 
-	%orig; 
-	[self _applyIconLabelAlpha:0];
-	wasPressed = YES; 
-}
-
-
--(void)setContextMenuInteractionActive:(BOOL)arg1  { 
-	%log;
-	%orig;
-	[self _applyIconLabelAlpha:0];
-	wasPressed = YES; 
-}
-
--(void)dismissContextMenuWithCompletion:(id)arg1  {
-	%log; 
-	%orig;
-	[self _applyIconLabelAlpha:0];
-	wasPressed = YES;  
+	} 
 }
 %end
 
@@ -151,6 +144,7 @@ static void SLReloadPrefs() {
     }
 
 	enabled = [prefs objectForKey:@"enabled"] ? [[prefs valueForKey:@"enabled"] boolValue] : YES;
+	enabledFolders = [prefs objectForKey:@"enabledFolders"] ? [[prefs valueForKey:@"enabledFolders"] boolValue] : YES;
 	delay = [prefs objectForKey:@"delay"] ? [[prefs valueForKey:@"delay"] doubleValue] : 1;
 }
 

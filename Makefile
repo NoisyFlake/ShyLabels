@@ -5,7 +5,7 @@ FINALPACKAGE = 1
 include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = ShyLabels
-$(TWEAK_NAME)_FILES = Tweak.xm
+$(TWEAK_NAME)_FILES = ShyLabels.xm
 
 SUBPROJECTS += Preferences
 
